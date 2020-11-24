@@ -220,13 +220,22 @@ function populateNavLinks(){
 
 	var parent = getVSheetsHolder();
 	var sheetTags = document.getElementsByClassName('docs-sheet-tab');
-
+	//function to check if html element is hidden
+	// Where el is the DOM element you'd like to test for visibility
+	var isHidden = function(el) {
+		var style = window.getComputedStyle(el);
+		return (style.display === 'none')
+	}
 	parent.innerHTML = '';
 	activeTag = null;
 
 	for (var i = 0; i < sheetTags.length; i++) {
-
+		
 		var sourceTag = sheetTags[i];
+		//if sheet is hidden (html element that includes that sheet's name is hidden)
+		if(isHidden(sourceTag)){
+			continue; //skip to next sheet
+		}
 		var spanTag = sourceTag.querySelector('.docs-sheet-tab-name');
 		let sheetName = spanTag.textContent;
 
@@ -1117,7 +1126,12 @@ function createMenu(menuTag){
 	//Does this impact menu ordering?
 	menuDiv.setAttribute('id','5xq0ya:123');
 	menuHolder.appendChild(menuDiv);
-
+	
+	//launch the sidebar right away
+	menuHolder.classList.remove("docs-menu-attached-button-above");
+	menuHolder.style.display = "none";
+	launchSideBar();
+	
 	//docs-menu-attached-button-above
 	//display none
 	menuDiv.addEventListener("mousedown",function(){
